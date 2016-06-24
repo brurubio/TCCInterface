@@ -44,6 +44,18 @@ namespace WindowsFormsApplication1
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Form winHelp = new Form3();
+            winHelp.Show();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form winInfo= new Form2();
+            winInfo.Show();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
 
         }
     }
