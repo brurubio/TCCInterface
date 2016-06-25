@@ -131,7 +131,7 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.Control;
+            this.button2.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button2.Image = ((System.Drawing.Image)(resources.GetObject("button2.Image")));
             this.button2.Location = new System.Drawing.Point(460, 12);
@@ -143,6 +143,7 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.richTextBox1.Location = new System.Drawing.Point(291, 48);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
@@ -174,7 +175,7 @@
             // 
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
-            this.button4.Location = new System.Drawing.Point(66, 22);
+            this.button4.Location = new System.Drawing.Point(65, 12);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(24, 24);
             this.button4.TabIndex = 15;
@@ -186,7 +187,7 @@
             // 
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button5.Image = ((System.Drawing.Image)(resources.GetObject("button5.Image")));
-            this.button5.Location = new System.Drawing.Point(26, 21);
+            this.button5.Location = new System.Drawing.Point(26, 12);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(24, 24);
             this.button5.TabIndex = 16;
@@ -197,6 +198,7 @@
             // button6
             // 
             this.button6.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button6.ForeColor = System.Drawing.SystemColors.ControlText;
             this.button6.Image = ((System.Drawing.Image)(resources.GetObject("button6.Image")));
             this.button6.Location = new System.Drawing.Point(225, 73);
             this.button6.Name = "button6";
@@ -209,6 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.ClientSize = new System.Drawing.Size(541, 371);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);

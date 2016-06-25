@@ -64,7 +64,8 @@ namespace WindowsFormsApplication1
             string path;
             // Displays an OpenFileDialog so the user can select a Cursor.
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
-            //openFileDialog1.Filter = "Cursor Files|*.cur";
+            //openFileDialog1.Filter = "Text files (*.txt)|*.txt| Data files (*.dat)|*.dat ";
+            openFileDialog1.Filter = "OPF files (*.txt,*.dat)|*.txt,*.dat ";
             openFileDialog1.Title = "Select a Database File";
 
             // Show the Dialog.
@@ -72,8 +73,6 @@ namespace WindowsFormsApplication1
             // a .CUR file was selected, open it.
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                // Assign the cursor in the Stream to the Form's Cursor property.
-                //path = new File(openFileDialog1.OpenFile());
                 path = openFileDialog1.FileName;
                 textBox1.Text = path;
             }
