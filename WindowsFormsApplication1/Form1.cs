@@ -22,44 +22,39 @@ namespace WindowsFormsApplication1
 
         }
 
-        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
-        {
-
-        }
-
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) // combobox selecionar processo
         {
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) // botão iniciar
         {
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e) // botão de ajuda
         {
             Form winHelp = new Form3();
             winHelp.Show();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e) // botão de info
         {
             Form winInfo= new Form2();
             winInfo.Show();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e) // botão salvar
         {
 
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void button6_Click(object sender, EventArgs e) //botão de selecionar arquivo
         {
             string path;
             // Displays an OpenFileDialog so the user can select a Cursor.
@@ -78,7 +73,7 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void button5_Click(object sender, EventArgs e) // botão database
         {
 
         }
