@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,47 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        string path;
+        string path, extension, fileName, fileDirec;
+		int ext = -1;
+		float Ptrain = 0, Ptest = 0;
 
         public Form1()
         {
             InitializeComponent();
+			System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
+			customCulture.NumberFormat.NumberDecimalSeparator = ".";
+			System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
         }
+
+		private static void ExecuteCommand(string fileDirec, string command)
+		{
+			Console.WriteLine(command);
+			Process proc = new System.Diagnostics.Process();
+			proc.StartInfo.FileName = "/bin/bash";
+			//proc.StartInfo.Arguments = command;
+			proc.StartInfo.WorkingDirectory = fileDirec;
+			proc.StartInfo.Arguments = "-c \" " + command + " \"";
+			proc.StartInfo.UseShellExecute = false; 
+			proc.StartInfo.RedirectStandardOutput = true;
+			proc.Start ();
+			proc.WaitForExit();
+
+			while (!proc.StandardOutput.EndOfStream) {
+				Console.WriteLine (proc.StandardOutput.ReadLine ());
+			}
+		}
+
+		public static void Executeterminal(string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
+		{
+			//Console.WriteLine(fileDirec);
+			//Console.WriteLine(fileData);
+			//Console.WriteLine(ext);
+			//Console.WriteLine(Ptrain);
+			//Console.WriteLine(Ptest);
+			ExecuteCommand(fileDirec, "/home/bruna/Biblioteca/LibOPF/tools/opf2txt boat.dat cy.txt");
+			//ExecuteCommand(fileDirec, "./testTerminal.sh " + ext + " " + fileData + " " + Ptrain + " " + Ptest);
+			//ExecuteCommand("gnome-terminal -x bash -ic 'cd $fileDirec; ./testTerminal.sh $ext $fileName $Ptrain $Ptest;bash'");
+		}
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -36,15 +72,14 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e) // botão iniciar
         {
-            string extension, fileName, strCmdText;
-            int ext = -1, Ptrain = 0, Ptest = 0;
             if (textBox1. Text == "")
             {
                 MessageBox.Show("Selecione um arquivo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Focus();
             }
-            extension = System.IO.Path.GetExtension(path);
+			fileDirec = System.IO.Path.GetDirectoryName(path);
             fileName = System.IO.Path.GetFileName(path);
+			extension = System.IO.Path.GetExtension(path);
             //Console.WriteLine(path);
             //Console.WriteLine(fileName);
             //Console.WriteLine(extension);
@@ -68,18 +103,21 @@ namespace WindowsFormsApplication1
             }
             Ptrain = Convert.ToInt16(textBox3.Text);
             Ptest = Convert.ToInt16(textBox4.Text);
+			Ptrain = Ptrain/100;
+			Ptest = Ptest/100;
             //Console.WriteLine(comboBox1.SelectedIndex); 
             //Console.WriteLine(Ptrain);
             //Console.WriteLine(Ptest);
-            if ((Ptrain + Ptest) != 100)
+            if ((Ptrain + Ptest) != 1)
             {
                 MessageBox.Show("Os valores de treino e teste devem somar 100", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox3.Focus();
             }
             if (comboBox1.SelectedIndex == 0)
             {
-                strCmdText = "./testTerminal.sh";
-                System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
+				Executeterminal(fileDirec, fileName, ext, Ptrain, Ptest);
+                //strCmdText = "./testTerminal.sh";
+                //System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
             }
 
         }
@@ -124,5 +162,7 @@ namespace WindowsFormsApplication1
         {
 
         }
+
+
     }
 }
