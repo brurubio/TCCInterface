@@ -13,7 +13,7 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        string path, extension, fileName, fileDirec;
+        string path, OPFpath, extension, fileName, fileDirec;
 		int ext = -1;
 		float Ptrain = 0, Ptest = 0;
 
@@ -23,9 +23,14 @@ namespace WindowsFormsApplication1
 			System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
 			customCulture.NumberFormat.NumberDecimalSeparator = ".";
 			System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
+            Form winOPF = new Form4();
+            winOPF.ShowDialog();
+            //this.OPFpath = Form4.pth;
+            OPFpath = Form4.pth;
+            Console.WriteLine(OPFpath);
         }
 
-		private static void ExecuteCommand(string fileDirec, string command)
+        private static void ExecuteCommand(string fileDirec, string command)
 		{
 			Console.WriteLine(command);
 			Process proc = new System.Diagnostics.Process();
@@ -43,15 +48,15 @@ namespace WindowsFormsApplication1
 			}
 		}
 
-		public static void Executeterminal(string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
+		public static void Executeterminal(string binPath, string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
 		{
 			//Console.WriteLine(fileDirec);
 			//Console.WriteLine(fileData);
 			//Console.WriteLine(ext);
 			//Console.WriteLine(Ptrain);
 			//Console.WriteLine(Ptest);
-			ExecuteCommand(fileDirec, "/home/bruna/Biblioteca/LibOPF/tools/opf2txt boat.dat cy.txt");
-			//ExecuteCommand(fileDirec, "./testTerminal.sh " + ext + " " + fileData + " " + Ptrain + " " + Ptest);
+			//ExecuteCommand(fileDirec, "opf2txt boat.dat cy.txt");
+			ExecuteCommand(fileDirec, "./testTerminal.sh " + ext + " " + binPath + " " + fileData + " " + Ptrain + " " + Ptest);
 			//ExecuteCommand("gnome-terminal -x bash -ic 'cd $fileDirec; ./testTerminal.sh $ext $fileName $Ptrain $Ptest;bash'");
 		}
 
@@ -62,7 +67,6 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) // combobox selecionar processo
@@ -115,7 +119,7 @@ namespace WindowsFormsApplication1
             }
             if (comboBox1.SelectedIndex == 0)
             {
-				Executeterminal(fileDirec, fileName, ext, Ptrain, Ptest);
+				Executeterminal(OPFpath, fileDirec,fileName, ext, Ptrain, Ptest);
                 //strCmdText = "./testTerminal.sh";
                 //System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
             }
