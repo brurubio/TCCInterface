@@ -77,7 +77,7 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e) // botão iniciar
         {
-            if (textBox1. Text == "")
+            if(textBox1. Text == "")
             {
                 MessageBox.Show("Selecione um arquivo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Focus();
@@ -110,37 +110,39 @@ namespace WindowsFormsApplication1
             Ptest = Convert.ToInt16(textBox4.Text);
 			Ptrain = Ptrain/100;
 			Ptest = Ptest/100;
+			float sum = Ptrain + Ptest;
             //Console.WriteLine(comboBox1.SelectedIndex); 
-            //Console.WriteLine(Ptrain);
-            //Console.WriteLine(Ptest);
-            if ((Ptrain + Ptest) != 1)
+			if (sum != 1.0)
             {
-                MessageBox.Show("Os valores de treino e teste devem somar 100", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Os valores de treino e teste devem somar 100%.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox3.Focus();
+				richTextBox1.Clear();
             }
+
             if (comboBox1.SelectedIndex == 0)
             {
 				Executeterminal(OPFpath, fileDirec,fileName, ext, Ptrain, Ptest);
 				richTextBox1.Text = "Rodando OPF...";
                 while (!System.IO.File.Exists(fileDirec + "/testing.dat.acc")){
-                    richTextBox1.Text += "...";
+                    //richTextBox1.Text += "...";
                     System.Threading.Thread.Sleep (100);
 				}
-                using (System.IO.StreamReader ln = new System.IO.StreamReader(path))
+				string filePath = fileDirec + "/" + System.IO.Path.GetFileNameWithoutExtension(path) + ".txt";
+                using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
                 {
-                    string filePath = fileDirec + System.IO.Path.GetFileNameWithoutExtension(path) + ".txt";
                     string line = ln.ReadLine();
                     string[] words = line.Split();
                     richTextBox1.Text += "OK\nNúmero de amostras: " + words[0];
                     richTextBox1.Text += "\nNúmero de classes: " + words[1];
                     richTextBox1.Text += "\nNúmero de características: " + words[2];
                 }
-                richTextBox1.Text += "Ok\nAcurácia: " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.acc" + "%");
-				richTextBox1.Text += "Tempo de treinamento: " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.time" + " s");
-				richTextBox1.Text += "Tempo de teste: " + System.IO.File.ReadAllText(fileDirec+"/training.dat.time" + " s");
+				richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.acc");
+				richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.time");
+				richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirec+"/training.dat.time");
 				//richTextBox1.Text = " \n";
                 //strCmdText = "./testTerminal.sh";
-                //System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
+				ExecuteCommand(fileDirec, "rm *.out *.acc *.time classifier.opf");
+				//System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
             }
 
         }
