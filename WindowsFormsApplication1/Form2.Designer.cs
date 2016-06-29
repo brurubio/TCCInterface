@@ -65,7 +65,7 @@
             this.ClientSize = new System.Drawing.Size(375, 371);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.richTextBox1);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+           // this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(391, 410);
             this.Name = "Form2";

@@ -122,12 +122,22 @@ namespace WindowsFormsApplication1
             {
 				Executeterminal(OPFpath, fileDirec,fileName, ext, Ptrain, Ptest);
 				richTextBox1.Text = "Rodando OPF...";
-				while(!System.IO.File.Exists(fileDirec + "/classifier.opf")){
-					System.Threading.Thread.Sleep (100);
-				} 
-				richTextBox1.Text += "Ok\nAcurácia: " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.acc");
-				richTextBox1.Text += "Tempo de treinamento: " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.time");
-				richTextBox1.Text += "Tempo de teste: " + System.IO.File.ReadAllText(fileDirec+"/training.dat.time");
+                while (!System.IO.File.Exists(fileDirec + "/testing.dat.acc")){
+                    richTextBox1.Text += "...";
+                    System.Threading.Thread.Sleep (100);
+				}
+                using (System.IO.StreamReader ln = new System.IO.StreamReader(path))
+                {
+                    string filePath = fileDirec + System.IO.Path.GetFileNameWithoutExtension(path) + ".txt";
+                    string line = ln.ReadLine();
+                    string[] words = line.Split();
+                    richTextBox1.Text += "OK\nNúmero de amostras: " + words[0];
+                    richTextBox1.Text += "\nNúmero de classes: " + words[1];
+                    richTextBox1.Text += "\nNúmero de características: " + words[2];
+                }
+                richTextBox1.Text += "Ok\nAcurácia: " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.acc" + "%");
+				richTextBox1.Text += "Tempo de treinamento: " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.time" + " s");
+				richTextBox1.Text += "Tempo de teste: " + System.IO.File.ReadAllText(fileDirec+"/training.dat.time" + " s");
 				//richTextBox1.Text = " \n";
                 //strCmdText = "./testTerminal.sh";
                 //System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
