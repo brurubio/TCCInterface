@@ -27,12 +27,13 @@ namespace WindowsFormsApplication1
             winOPF.ShowDialog();
             //this.OPFpath = Form4.pth;
             OPFpath = Form4.pth;
-            Console.WriteLine(OPFpath);
+			//winOPF.Close();
+            //Console.WriteLine(OPFpath);
         }
 
         private static void ExecuteCommand(string fileDirec, string command)
 		{
-			Console.WriteLine(command);
+			//Console.WriteLine(command);
 			Process proc = new System.Diagnostics.Process();
 			proc.StartInfo.FileName = "/bin/bash";
 			//proc.StartInfo.Arguments = command;
@@ -120,6 +121,14 @@ namespace WindowsFormsApplication1
             if (comboBox1.SelectedIndex == 0)
             {
 				Executeterminal(OPFpath, fileDirec,fileName, ext, Ptrain, Ptest);
+				richTextBox1.Text = "Rodando OPF...";
+				while(!System.IO.File.Exists(fileDirec + "/classifier.opf")){
+					System.Threading.Thread.Sleep (100);
+				} 
+				richTextBox1.Text += "Ok\nAcurácia: " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.acc");
+				richTextBox1.Text += "Tempo de treinamento: " + System.IO.File.ReadAllText(fileDirec+"/testing.dat.time");
+				richTextBox1.Text += "Tempo de teste: " + System.IO.File.ReadAllText(fileDirec+"/training.dat.time");
+				//richTextBox1.Text = " \n";
                 //strCmdText = "./testTerminal.sh";
                 //System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
             }
