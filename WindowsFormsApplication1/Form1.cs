@@ -124,11 +124,12 @@ namespace WindowsFormsApplication1
 						//richTextBox1.Text += "...";
 						System.Threading.Thread.Sleep (100);
 					}
+					richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain*100)+ "%" + "\nPorcentagem de Teste: " + (Ptest*100)+"%";
 					string filePath = fileDirec + "/" + System.IO.Path.GetFileNameWithoutExtension (path) + ".txt";
 					using (System.IO.StreamReader ln = new System.IO.StreamReader (filePath)) {
 						string line = ln.ReadLine ();
 						string[] words = line.Split ();
-						richTextBox1.Text += "OK\nNúmero de amostras: " + words [0];
+						richTextBox1.Text += "\nNúmero de amostras: " + words [0];
 						richTextBox1.Text += "\nNúmero de classes: " + words [1];
 						richTextBox1.Text += "\nNúmero de características: " + words [2];
 					}
@@ -137,7 +138,12 @@ namespace WindowsFormsApplication1
 					richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText (fileDirec + "/training.dat.time");
 					//richTextBox1.Text = " \n";
 					//strCmdText = "./testTerminal.sh";
-					ExecuteCommand (fileDirec, "rm *.out *.acc *.time classifier.opf");
+					if (ext == 1) {
+						string fileWithoutExt = System.IO.Path.GetFileNameWithoutExtension (path);
+						ExecuteCommand (fileDirec, "rm *.out *.acc *.time classifier.opf testing.dat training.dat "+fileWithoutExt+".txt");
+					}
+					else
+					ExecuteCommand (fileDirec, "rm *.out *.acc *.time classifier.opf testing.dat training.dat");
 					//System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
 				}
 			}
@@ -158,7 +164,20 @@ namespace WindowsFormsApplication1
 
         private void button4_Click(object sender, EventArgs e) // botão salvar
         {
+			// Create a SaveFileDialog to request a path and file name to save to.
+			SaveFileDialog saveFile1 = new SaveFileDialog();
 
+			// Initialize the SaveFileDialog to specify the RTF extention for the file.
+			saveFile1.DefaultExt = "*.txt";
+			saveFile1.Filter = "Text Files|*.txt";
+
+			// Determine whether the user selected a file name from the saveFileDialog.
+			if(saveFile1.ShowDialog() == System.Windows.Forms.DialogResult.OK &&
+				saveFile1.FileName.Length > 0) 
+			{
+				// Save the contents of the RichTextBox into the file.
+				richTextBox1.SaveFile(saveFile1.FileName);
+			}
         }
 
         private void button6_Click(object sender, EventArgs e) //botão de selecionar arquivo
