@@ -66,7 +66,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.richTextBox1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(421, 410);
+            this.MaximumSize = new System.Drawing.Size(447, 425);
             this.Name = "Form2";
             this.Text = "TCC Info";
             this.ResumeLayout(false);
