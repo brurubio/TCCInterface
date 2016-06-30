@@ -161,8 +161,9 @@
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(0, 303);
+            this.pictureBox1.MaximumSize = new System.Drawing.Size(621, 68);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(541, 68);
+            this.pictureBox1.Size = new System.Drawing.Size(621, 68);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox1.TabIndex = 13;
             this.pictureBox1.TabStop = false;
@@ -237,7 +238,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(637, 425);
+            this.MaximumSize = new System.Drawing.Size(637, 420);
             this.Name = "Form1";
             this.Text = "TCC";
             this.Load += new System.EventHandler(this.Form1_Load);
