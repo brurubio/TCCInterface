@@ -87,6 +87,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(330, 152);
             this.MinimizeBox = false;
             this.Name = "Form4";
             this.Text = "LibOPF";
