@@ -21,25 +21,32 @@ namespace WindowsFormsApplication1
 
         public void button1_Click(object sender, EventArgs e)
         {
-            // Displays an OpenFileDialog so the user can select a Cursor.
-            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
-            //folderBrowserDialog1.Title = "Select a Database File";
+                // Displays an OpenFileDialog so the user can select a Cursor.
+                FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
+                //folderBrowserDialog1.Title = "Select a Database File";
 
-            // Show the Dialog.
-            // If the user clicked OK in the dialog and
-            // a .CUR file was selected, open it.
-            if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                pth = folderBrowserDialog1.SelectedPath;
-                textBox1.Text = pth;
-            }
+                // Show the Dialog.
+                // If the user clicked OK in the dialog and
+                // a .CUR file was selected, open it.
+                if (folderBrowserDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    pth = folderBrowserDialog1.SelectedPath;
+                    textBox1.Text = pth;
+                }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (textBox1.Text == "")
+            {
+                MessageBox.Show("Selecione um arquivo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                textBox1.Focus();
+            }
+            else
+                this.Close();
             //Application.Exit();
             //Form winMain = new Form1();
-            this.Close();
+
             //winMain.Show();
         }
     }

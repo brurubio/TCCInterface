@@ -77,7 +77,7 @@ namespace WindowsFormsApplication1
 
         private void button1_Click(object sender, EventArgs e) // botão iniciar
         {
-            if(textBox1. Text == "")
+            if(textBox1.Text == "")
             {
                 MessageBox.Show("Selecione um arquivo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Focus();
