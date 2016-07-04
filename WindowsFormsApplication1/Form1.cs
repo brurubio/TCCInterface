@@ -164,6 +164,11 @@ namespace WindowsFormsApplication1
 		// botão salvar
         private void button4_Click(object sender, EventArgs e) 
         {
+			if (richTextBox1.Text == ""){
+				MessageBox.Show("Caixa de texto vazia", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			else{
+				
 			// Create a SaveFileDialog to request a path and file name to save to.
 			SaveFileDialog saveFile1 = new SaveFileDialog();
 
@@ -177,6 +182,7 @@ namespace WindowsFormsApplication1
 			{
 				// Save the contents of the RichTextBox into the file.
 				richTextBox1.SaveFile(saveFile1.FileName);
+			}
 			}
         }
 
