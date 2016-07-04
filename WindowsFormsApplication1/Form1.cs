@@ -13,17 +13,19 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        string path, OPFpath, extension, fileName, fileDirec;
+        string path, OPFpath, extension, fileName, fileDirec, fileDirecSh;
 		int ext = -1;
 		float Ptrain = 0, Ptest = 0;
 
         public Form1()
         {
             InitializeComponent();
+			//muda a "," do número real para "."
 			System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
 			customCulture.NumberFormat.NumberDecimalSeparator = ".";
 			System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
-            Form winOPF = new Form4();
+			//abre a janela para selecionar o caminho da LibOPF 
+			Form winOPF = new Form4();
             winOPF.ShowDialog();
             //this.OPFpath = Form4.pth;
             OPFpath = Form4.pth;
@@ -31,13 +33,12 @@ namespace WindowsFormsApplication1
             //Console.WriteLine(OPFpath);
         }
 
-        private static void ExecuteCommand(string fileDirec, string command)
+		//executa comando no terminal
+        private static void ExecuteCommand(string fileDirecSh, string command)
 		{
-			//Console.WriteLine(command);
 			Process proc = new System.Diagnostics.Process();
 			proc.StartInfo.FileName = "/bin/bash";
-			//proc.StartInfo.Arguments = command;
-			proc.StartInfo.WorkingDirectory = fileDirec;
+			proc.StartInfo.WorkingDirectory = fileDirecSh;
 			proc.StartInfo.Arguments = "-c \" " + command + " \"";
 			proc.StartInfo.UseShellExecute = false; 
 			proc.StartInfo.RedirectStandardOutput = true;
@@ -49,16 +50,10 @@ namespace WindowsFormsApplication1
 			}
 		}
 
-		public static void Executeterminal(string binPath, string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
+		//informa qual comando de terminal deve ser executado
+		public static void Executeterminal(string binPath, string fileDirecSh, string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
 		{
-			//Console.WriteLine(fileDirec);
-			//Console.WriteLine(fileData);
-			//Console.WriteLine(ext);
-			//Console.WriteLine(Ptrain);
-			//Console.WriteLine(Ptest);
-			//ExecuteCommand(fileDirec, "opf2txt boat.dat cy.txt");
-			ExecuteCommand(fileDirec, "./testTerminal.sh " + ext + " " + binPath + " " + fileData + " " + Ptrain + " " + Ptest);
-			//ExecuteCommand("gnome-terminal -x bash -ic 'cd $fileDirec; ./testTerminal.sh $ext $fileName $Ptrain $Ptest;bash'");
+			ExecuteCommand(fileDirecSh, "./testTerminal.sh " + ext + " " + binPath + " " + fileDirec + " " + fileDirecSh + " " + fileData + " " + Ptrain + " " + Ptest);
 		}
 
         private void label1_Click(object sender, EventArgs e)
@@ -75,94 +70,99 @@ namespace WindowsFormsApplication1
 
         }
 
+		//botão iniciar realiza toda operação
         private void button1_Click(object sender, EventArgs e) // botão iniciar
         {
+			//caso nenhum arquivo tenha sido selecionado
             if(textBox1.Text == "")
             {
                 MessageBox.Show("Selecione um arquivo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Focus();
             }
-			fileDirec = System.IO.Path.GetDirectoryName(path);
-            fileName = System.IO.Path.GetFileName(path);
-			extension = System.IO.Path.GetExtension(path);
-            //Console.WriteLine(path);
-            //Console.WriteLine(fileName);
-            //Console.WriteLine(extension);
+			fileDirec = System.IO.Path.GetDirectoryName(path); //diretório da base de dados
+            fileName = System.IO.Path.GetFileName(path); //nome da base de dados
+			extension = System.IO.Path.GetExtension(path); //extensão da base de dados
+			fileDirecSh = "/home/bruna/Bruna/UNESP/TCCInterface/WindowsFormsApplication1/sh"; //diretório do sh padrão
+			//verifica extensão da base
             if (String.Compare(extension, ".txt", true) == 0)
-            {
+			{
                 ext = 0;
             }
-            else
-            {
+			else
+			{
                 if (String.Compare(extension, ".dat", true) == 0)
-                {
+				{
                     ext = 1;
                 }
             }
-            //Console.WriteLine(ext);
+
             // 0 - OPF | 1 - OPF + PSO
-            if (comboBox1.SelectedIndex == -1)
+			//erro caso nenhum processo eseja selecionado
+            if (comboBox1.SelectedIndex == -1) 
             {
                 MessageBox.Show("Selecione um processo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 comboBox1.Focus();
             }
             Ptrain = Convert.ToInt16(textBox3.Text);
             Ptest = Convert.ToInt16(textBox4.Text);
-			Ptrain = Ptrain/100;
-			Ptest = Ptest/100;
+			Ptrain = Ptrain/100; //tranformação de porcentagem (0-1)
+			Ptest = Ptest/100; //tranformação de porcentagem (0-1)
 			float sum = Ptrain + Ptest;
-            //Console.WriteLine(comboBox1.SelectedIndex); 
-			if (sum != 1.0) {
+			//teste se soma é 100%
+			if (sum != 1.0) { 
 				MessageBox.Show ("Os valores de treino e teste devem somar 100%.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				textBox3.Focus ();
 				richTextBox1.Clear ();
 			} else {
+				//se selecionado OPF (op. 0)
 				if (comboBox1.SelectedIndex == 0) {
-					Executeterminal (OPFpath, fileDirec, fileName, ext, Ptrain, Ptest);
+					//executa comando terminal
+					Executeterminal (OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
 					richTextBox1.Text = "Rodando OPF...";
-					while (!System.IO.File.Exists (fileDirec + "/testing.dat.acc")) {
-						//richTextBox1.Text += "...";
+					//verifica se processo já foi finalizado
+					while (!System.IO.File.Exists (fileDirecSh + "/testing.dat.acc")) {
+						richTextBox1.Text += "...";
 						System.Threading.Thread.Sleep (100);
 					}
+					//impressão de resultados I
 					richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain*100)+ "%" + "\nPorcentagem de Teste: " + (Ptest*100)+"%";
-					string filePath = fileDirec + "/" + System.IO.Path.GetFileNameWithoutExtension (path) + ".txt";
+					string getName = System.IO.Path.GetFileNameWithoutExtension (path);//pega nome da base
+					//utiliza o base.txt
+					string filePath = fileDirecSh + "/" + getName + ".txt"; 
 					using (System.IO.StreamReader ln = new System.IO.StreamReader (filePath)) {
 						string line = ln.ReadLine ();
 						string[] words = line.Split ();
+						//impressão de resultados II
 						richTextBox1.Text += "\nNúmero de amostras: " + words [0];
 						richTextBox1.Text += "\nNúmero de classes: " + words [1];
 						richTextBox1.Text += "\nNúmero de características: " + words [2];
 					}
-					richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText (fileDirec + "/testing.dat.acc");
-					richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText (fileDirec + "/testing.dat.time");
-					richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText (fileDirec + "/training.dat.time");
-					//richTextBox1.Text = " \n";
-					//strCmdText = "./testTerminal.sh";
-					if (ext == 1) {
-						string fileWithoutExt = System.IO.Path.GetFileNameWithoutExtension (path);
-						ExecuteCommand (fileDirec, "rm *.out *.acc *.time classifier.opf testing.dat training.dat "+fileWithoutExt+".txt");
-					}
-					else
-					ExecuteCommand (fileDirec, "rm *.out *.acc *.time classifier.opf testing.dat training.dat");
-					//System.Diagnostics.Process.Start("CMD.exe", strCmdText + ext + fileName + Ptrain + Ptest);
-				}
-			}
+					//impressão de resultados III
+					richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText (fileDirecSh + "/testing.dat.acc");
+					richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText (fileDirecSh + "/testing.dat.time");
+					richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText (fileDirecSh + "/training.dat.time");
+					//remoção dos arquivos gerados
+					ExecuteCommand (fileDirecSh, "rm *.out *.acc *.time classifier.opf *.dat " + getName + ".txt");
+				} //end if (combobox = 0)
+			}// end else sum
+        }// end botão iniciar
 
-        }
-
-        private void button2_Click(object sender, EventArgs e) // botão de ajuda
+		// botão de ajuda - nova janela
+        private void button2_Click(object sender, EventArgs e) 
         {
             Form winHelp = new Form3();
             winHelp.Show();
         }
 
-        private void button3_Click(object sender, EventArgs e) // botão de info
+		// botão de info - noja janela
+        private void button3_Click(object sender, EventArgs e)
         {
             Form winInfo= new Form2();
             winInfo.Show();
         }
 
-        private void button4_Click(object sender, EventArgs e) // botão salvar
+		// botão salvar
+        private void button4_Click(object sender, EventArgs e) 
         {
 			// Create a SaveFileDialog to request a path and file name to save to.
 			SaveFileDialog saveFile1 = new SaveFileDialog();
@@ -180,7 +180,8 @@ namespace WindowsFormsApplication1
 			}
         }
 
-        private void button6_Click(object sender, EventArgs e) //botão de selecionar arquivo
+		//botão de selecionar arquivo
+        private void button6_Click(object sender, EventArgs e) 
         {
             
             // Displays an OpenFileDialog so the user can select a Cursor.
