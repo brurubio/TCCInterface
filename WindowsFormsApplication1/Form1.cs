@@ -76,7 +76,7 @@ namespace WindowsFormsApplication1
 			//caso nenhum arquivo tenha sido selecionado
             if(textBox1.Text == "")
             {
-                MessageBox.Show("Selecione um arquivo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Selecione um arquivo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Focus();
             }
 			fileDirec = System.IO.Path.GetDirectoryName(path); //diretório da base de dados
@@ -100,7 +100,7 @@ namespace WindowsFormsApplication1
 			//erro caso nenhum processo eseja selecionado
             if (comboBox1.SelectedIndex == -1) 
             {
-                MessageBox.Show("Selecione um processo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Selecione um processo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 comboBox1.Focus();
             }
             Ptrain = Convert.ToInt16(textBox3.Text);
@@ -144,6 +144,14 @@ namespace WindowsFormsApplication1
 					//remoção dos arquivos gerados
 					ExecuteCommand (fileDirecSh, "rm *.out *.acc *.time classifier.opf *.dat " + getName + ".txt");
 				} //end if (combobox = 0)
+                else
+                {
+                    if (comboBox1.SelectedIndex == 1)
+                    {
+                        MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        comboBox1.Focus();
+                    }
+                }
 			}// end else sum
         }// end botão iniciar
 
@@ -165,7 +173,7 @@ namespace WindowsFormsApplication1
         private void button4_Click(object sender, EventArgs e) 
         {
 			if (richTextBox1.Text == ""){
-				MessageBox.Show("Caixa de texto vazia", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Caixa de texto vazia. Execute um procedimento para gerar dados.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			else{
 				
