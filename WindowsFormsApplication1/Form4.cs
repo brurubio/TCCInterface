@@ -19,7 +19,7 @@ namespace WindowsFormsApplication1
             InitializeComponent();
         }
 
-        public void button1_Click(object sender, EventArgs e)
+        public void button1_Click(object sender, EventArgs e) //selecionar caminho
         {
                 // Displays an OpenFileDialog so the user can select a Cursor.
                 FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
@@ -35,11 +35,11 @@ namespace WindowsFormsApplication1
                 }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button2_Click(object sender, EventArgs e) // OK
         {
             if (textBox1.Text == "")
             {
-                MessageBox.Show("Selecione um arquivo", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Selecione um caminho", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Focus();
             }
             else

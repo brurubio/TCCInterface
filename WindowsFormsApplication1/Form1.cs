@@ -13,24 +13,17 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        string path, OPFpath, extension, fileName, fileDirec, fileDirecSh;
+        string path, OPFpath, OPTpath, DEVpath, extension, fileName, fileDirec, fileDirecSh;
 		int ext = -1;
 		float Ptrain = 0, Ptest = 0;
 
         public Form1()
         {
             InitializeComponent();
-			//muda a "," do número real para "."
+            //muda a "," do número real para "."
 			System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
 			customCulture.NumberFormat.NumberDecimalSeparator = ".";
 			System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
-			//abre a janela para selecionar o caminho da LibOPF 
-			Form winOPF = new Form4();
-            winOPF.ShowDialog();
-            //this.OPFpath = Form4.pth;
-            OPFpath = Form4.pth;
-			//winOPF.Close();
-            //Console.WriteLine(OPFpath);
         }
 
 		//executa comando no terminal
@@ -73,86 +66,108 @@ namespace WindowsFormsApplication1
 		//botão iniciar realiza toda operação
         private void button1_Click(object sender, EventArgs e) // botão iniciar
         {
-			//caso nenhum arquivo tenha sido selecionado
-            if(textBox1.Text == "")
+            //caso nenhum arquivo tenha sido selecionado
+            if (textBox1.Text == "")
             {
                 MessageBox.Show("Selecione um arquivo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 textBox1.Focus();
             }
-			fileDirec = System.IO.Path.GetDirectoryName(path); //diretório da base de dados
-            fileName = System.IO.Path.GetFileName(path); //nome da base de dados
-			extension = System.IO.Path.GetExtension(path); //extensão da base de dados
-			fileDirecSh = "/home/bruna/Bruna/UNESP/TCCInterface/WindowsFormsApplication1/sh"; //diretório do sh padrão
-			//verifica extensão da base
-            if (String.Compare(extension, ".txt", true) == 0)
-			{
-                ext = 0;
-            }
-			else
-			{
-                if (String.Compare(extension, ".dat", true) == 0)
-				{
-                    ext = 1;
-                }
-            }
-
-            // 0 - OPF | 1 - OPF + PSO
-			//erro caso nenhum processo eseja selecionado
-            if (comboBox1.SelectedIndex == -1) 
+            else
             {
-                MessageBox.Show("Selecione um processo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                comboBox1.Focus();
-            }
-            Ptrain = Convert.ToInt16(textBox3.Text);
-            Ptest = Convert.ToInt16(textBox4.Text);
-			Ptrain = Ptrain/100; //tranformação de porcentagem (0-1)
-			Ptest = Ptest/100; //tranformação de porcentagem (0-1)
-			float sum = Ptrain + Ptest;
-			//teste se soma é 100%
-			if (sum != 1.0) { 
-				MessageBox.Show ("Os valores de treino e teste devem somar 100%.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				textBox3.Focus ();
-				richTextBox1.Clear ();
-			} else {
-				//se selecionado OPF (op. 0)
-				if (comboBox1.SelectedIndex == 0) {
-					//executa comando terminal
-					Executeterminal (OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
-					richTextBox1.Text = "Rodando OPF...";
-					//verifica se processo já foi finalizado
-					while (!System.IO.File.Exists (fileDirecSh + "/testing.dat.acc")) {
-						richTextBox1.Text += "...";
-						System.Threading.Thread.Sleep (100);
-					}
-					//impressão de resultados I
-					richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain*100)+ "%" + "\nPorcentagem de Teste: " + (Ptest*100)+"%";
-					string getName = System.IO.Path.GetFileNameWithoutExtension (path);//pega nome da base
-					//utiliza o base.txt
-					string filePath = fileDirecSh + "/" + getName + ".txt"; 
-					using (System.IO.StreamReader ln = new System.IO.StreamReader (filePath)) {
-						string line = ln.ReadLine ();
-						string[] words = line.Split ();
-						//impressão de resultados II
-						richTextBox1.Text += "\nNúmero de amostras: " + words [0];
-						richTextBox1.Text += "\nNúmero de classes: " + words [1];
-						richTextBox1.Text += "\nNúmero de características: " + words [2];
-					}
-					//impressão de resultados III
-					richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText (fileDirecSh + "/testing.dat.acc");
-					richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText (fileDirecSh + "/testing.dat.time");
-					richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText (fileDirecSh + "/training.dat.time");
-					//remoção dos arquivos gerados
-					ExecuteCommand (fileDirecSh, "rm *.out *.acc *.time classifier.opf *.dat " + getName + ".txt");
-				} //end if (combobox = 0)
+                fileDirec = System.IO.Path.GetDirectoryName(path); //diretório da base de dados
+                fileName = System.IO.Path.GetFileName(path); //nome da base de dados
+                extension = System.IO.Path.GetExtension(path); //extensão da base de dados
+                fileDirecSh = "/home/bruna/Bruna/UNESP/TCCInterface/WindowsFormsApplication1/sh"; //diretório do sh padrão
+                                                                                                  //verifica extensão da base
+                if (String.Compare(extension, ".txt", true) == 0)
+                {
+                    ext = 0;
+                }
                 else
                 {
-                    if (comboBox1.SelectedIndex == 1)
+                    if (String.Compare(extension, ".dat", true) == 0)
                     {
-                        MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        comboBox1.Focus();
+                        ext = 1;
                     }
                 }
-			}// end else sum
+
+                // 0 - OPF | 1 - OPF + PSO
+                //erro caso nenhum processo eseja selecionado
+                if (comboBox1.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Selecione um processo.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    comboBox1.Focus();
+                }
+                else
+                {
+                    Ptrain = Convert.ToInt16(textBox3.Text);
+                    Ptest = Convert.ToInt16(textBox4.Text);
+                    Ptrain = Ptrain / 100; //tranformação de porcentagem (0-1)
+                    Ptest = Ptest / 100; //tranformação de porcentagem (0-1)
+                    float sum = Ptrain + Ptest;
+                    //teste se soma é 100%
+                    if (sum != 1.0)
+                    {
+                        MessageBox.Show("Os valores de treino e teste devem somar 100%.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        textBox3.Focus();
+                        richTextBox1.Clear();
+                    }
+                    else
+                    {
+                        //se selecionado OPF (op. 0)
+                        if (comboBox1.SelectedIndex == 0)
+                        {
+                            //abre a janela para selecionar o caminho da LibOPF 
+                            Form winOPF = new Form4();
+                            winOPF.ShowDialog();
+                            OPFpath = Form4.pth;
+                            //executa comando terminal
+                            Executeterminal(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
+                            //impressão de resultados I
+                            richTextBox1.Text = "Rodando OPF...";
+                            //verifica se processo já foi finalizado
+                            while (!System.IO.File.Exists(fileDirecSh + "/testing.dat.acc"))
+                            {
+                                richTextBox1.Text += "...";
+                                System.Threading.Thread.Sleep(100);
+                            }
+                            //impressão de resultados II
+                            richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain * 100) + "%" + "\nPorcentagem de Teste: " + (Ptest * 100) + "%";
+                            string getName = System.IO.Path.GetFileNameWithoutExtension(path);//pega nome da base
+                                                                                              //utiliza o base.txt
+                            string filePath = fileDirecSh + "/" + getName + ".txt";
+                            using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+                            {
+                                string line = ln.ReadLine();
+                                string[] words = line.Split();
+                                //impressão de resultados III
+                                richTextBox1.Text += "\nNúmero de amostras: " + words[0];
+                                richTextBox1.Text += "\nNúmero de classes: " + words[1];
+                                richTextBox1.Text += "\nNúmero de características: " + words[2];
+                            }
+                            //impressão de resultados IV
+                            richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.acc");
+                            richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.time");
+                            richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.dat.time");
+                            //remoção dos arquivos gerados
+                            ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf *.dat " + getName + ".txt");
+                        } //end if (combobox = 0)
+                        else
+                        {
+                            if (comboBox1.SelectedIndex == 1)
+                            {
+                                Form winLib = new Form5();
+                                winLib.ShowDialog();
+                                OPFpath = Form5.OPFpth;
+                                OPTpath = Form5.OPTpth;
+                                DEVpath = Form5.DEVpth;
+                                MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                comboBox1.Focus();
+                            }
+                        }
+                    }// end else sum
+                }//end else combobox1.selectedindex
+            }//end else textbox1.text
         }// end botão iniciar
 
 		// botão de ajuda - nova janela

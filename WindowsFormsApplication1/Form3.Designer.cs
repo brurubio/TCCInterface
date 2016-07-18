@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -42,7 +43,7 @@
             this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.richTextBox1.Size = new System.Drawing.Size(351, 326);
             this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "Ajuda sobre como utilizar";
+            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
             // 
             // label1
             // 
@@ -59,7 +60,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(375, 371);
+            this.ClientSize = new System.Drawing.Size(375, 381);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.richTextBox1);
             this.MaximizeBox = false;
