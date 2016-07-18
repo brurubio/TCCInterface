@@ -139,7 +139,7 @@ Classificação(OPF): No processo de classificação, o classificador OPF será 
 Classificação + Otimização:
 
 Porcentagens:
-è necessário que a soma das procentagens de treinamento e de teste somem 100%.
+É necessário que a soma das procentagens de treinamento e de teste somem 100%.
 
 Salvar
 Para armazenar os resultados obtidos e apresentados é preciso salvá-los em um arquivo texto.</value>
