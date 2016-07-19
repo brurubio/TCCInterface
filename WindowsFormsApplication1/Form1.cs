@@ -13,7 +13,7 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        string path, OPFpath, OPTpath, DEVpath, extension, fileName, fileDirec, fileDirecSh;
+        string path = null, OPFpath = null, OPTpath = null, DEVpath = null, extension = null, fileName = null, fileDirec = null, fileDirecSh = null;
 		int ext = -1;
 		float Ptrain = 0, Ptest = 0;
 
@@ -117,10 +117,13 @@ namespace WindowsFormsApplication1
                         //se selecionado OPF (op. 0)
                         if (comboBox1.SelectedIndex == 0)
                         {
-                            //abre a janela para selecionar o caminho da LibOPF 
-                            Form winOPF = new Form4();
-                            winOPF.ShowDialog();
-                            OPFpath = Form4.pth;
+                            if (OPFpath == null)
+                            {
+                                //abre a janela para selecionar o caminho da LibOPF 
+                                Form winOPF = new Form4();
+                                winOPF.ShowDialog();
+                                OPFpath = Form4.pth;
+                            }
                             //executa comando terminal
                             Executeterminal(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
                             //impressão de resultados I
@@ -156,11 +159,14 @@ namespace WindowsFormsApplication1
                         {
                             if (comboBox1.SelectedIndex == 1)
                             {
-                                Form winLib = new Form5();
-                                winLib.ShowDialog();
-                                OPFpath = Form5.OPFpth;
-                                OPTpath = Form5.OPTpth;
-                                DEVpath = Form5.DEVpth;
+                                if (OPFpath == null && OPTpath == null && DEVpath == null)
+                                {
+                                    Form winLib = new Form5();
+                                    winLib.ShowDialog();
+                                    OPFpath = Form5.OPFpth;
+                                    OPTpath = Form5.OPTpth;
+                                    DEVpath = Form5.DEVpth;
+                                }
                                 MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 comboBox1.Focus();
                             }

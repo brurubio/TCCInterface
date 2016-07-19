@@ -36,7 +36,7 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>glass.ico</ApplicationIcon>
+    <ApplicationIcon>IntrusonDetectIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="glass.ico" />
+    <Content Include="IntrusonDetectIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

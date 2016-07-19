@@ -118,30 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="richTextBox1.Text" xml:space="preserve">
-    <value>Para o funcionamento correto desta interface, é necessário instalar alguns recursos adicionais:
-LibOPF - 
-LibOPT - 
-LibDEV -
+    <value>• Para o funcionamento correto desta interface, é necessário instalar alguns recursos adicionais:
+   ◦ LibOPF - 
+   ◦ LibOPT - 
+   ◦ LibDEV -
 
-Formato da base de dados
+• Formato da base de dados
 O classificador OPF compreende um formato específico comobase de dados de antrada, aceitando arquivos no formato: Texto (*.txt) ou Dados (*.dat). 
 
 No entanto, ainda é necessário que o arquivo de base da dados siga uma formatação específica, já que o OPF comprrende apenas dados numéricos. A formatação necessária segue abaixo:
 
-&lt;# número de amostras&gt; &lt;# número de classes&gt; &lt;# número de características&gt;
-&lt;0&gt; &lt;rótulo&gt; &lt;valor carac. 1 da amostra 0&gt; &lt;valor carac. 2 da amostra 0&gt;
+&lt;# nº de amostras&gt; &lt;# nº de classes&gt; &lt;# nº de características&gt;
+&lt;0&gt; &lt;rótulo&gt; &lt;carac. 1 da amostra 0&gt; &lt;carac. 2 da amostra 0&gt;
 ....
-&lt;n-1&gt; &lt;rótulo&gt; &lt;valor carac. 1 da amostra n-1&gt; &lt;valor carac. 2 da amostra n-1&gt; ...
+&lt;n-1&gt; &lt;rótulo&gt; &lt; carac. 1 da amostra n-1&gt; &lt;carac. 2 da amostra n-1&gt;
 
-Operações
-Classificação(OPF): No processo de classificação, o classificador OPF será responsável por dividir a base de dados para treinamento e teste, para que consiga aprender as possíveis classes na etapa de treinamento, para posteriormente classificar novas amostras no período de teste.
+• Operações
+   ◦ Classificação(OPF): No processo de classificação, o classificador OPF será responsável por dividir a base de dados para treinamento e teste, para que consiga aprender as possíveis classes na etapa de treinamento, para posteriormente classificar novas amostras no período de teste.
 
-Classificação + Otimização:
+   ◦ Classificação + Otimização:
 
-Porcentagens:
+• Porcentagens:
 É necessário que a soma das procentagens de treinamento e de teste somem 100%.
 
-Salvar
+• Salvar
 Para armazenar os resultados obtidos e apresentados é preciso salvá-los em um arquivo texto.</value>
   </data>
 </root>
