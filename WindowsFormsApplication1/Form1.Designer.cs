@@ -188,14 +188,13 @@
             this.button4.Size = new System.Drawing.Size(24, 24);
             this.button4.TabIndex = 15;
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Visible = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
             this.button5.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button5.Image = ((System.Drawing.Image)(resources.GetObject("button5.Image")));
-            this.button5.Location = new System.Drawing.Point(26, 12);
+            this.button5.Location = new System.Drawing.Point(393, 12);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(24, 24);
             this.button5.TabIndex = 16;

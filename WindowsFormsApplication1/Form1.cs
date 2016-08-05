@@ -13,7 +13,7 @@ namespace WindowsFormsApplication1
 {
     public partial class Form1 : Form
     {
-        string path = null, OPFpath = null, OPTpath = null, DEVpath = null, extension = null, fileName = null, fileDirec = null, fileDirecSh = null;
+        string path = null, OPFpath = null, OPTpath = null, DEVpath = null, DEEPpath = null, extension = null, fileName = null, fileDirec = null, fileDirecSh = null;
 		int ext = -1;
 		float Ptrain = 0, Ptest = 0;
 
@@ -44,10 +44,15 @@ namespace WindowsFormsApplication1
 		}
 
 		//informa qual comando de terminal deve ser executado
-		public static void Executeterminal(string binPath, string fileDirecSh, string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
+		public static void ExecuteOPF(string OPFpath, string fileDirecSh, string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
 		{
-			ExecuteCommand(fileDirecSh, "./testTerminal.sh " + ext + " " + binPath + " " + fileDirec + " " + fileDirecSh + " " + fileData + " " + Ptrain + " " + Ptest);
+			ExecuteCommand(fileDirecSh, "./runOPF.sh " + ext + " " + OPFpath + " " + fileDirec + " " + fileDirecSh + " " + fileData + " " + Ptrain + " " + Ptest);
 		}
+
+        public static void ExecuteOPF_PSO(string OPFpath, string OPTpath, string DEVpath, string DEEPpath, string fileDirecSh, string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
+        {
+            ExecuteCommand(fileDirecSh, "./runOPF+PSO.sh " + ext + " " + OPFpath + " " + fileDirec + " " + fileDirecSh + " " + fileData + " " + Ptrain + " " + Ptest + " " + OPTpath + " " + DEVpath + " " + DEEPpath);
+        }
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -78,7 +83,7 @@ namespace WindowsFormsApplication1
                 fileName = System.IO.Path.GetFileName(path); //nome da base de dados
                 extension = System.IO.Path.GetExtension(path); //extensão da base de dados
                 fileDirecSh = "/home/bruna/Bruna/UNESP/TCCInterface/WindowsFormsApplication1/sh"; //diretório do sh padrão
-                                                                                                  //verifica extensão da base
+                //verifica extensão da base
                 if (String.Compare(extension, ".txt", true) == 0)
                 {
                     ext = 0;
@@ -125,7 +130,7 @@ namespace WindowsFormsApplication1
                                 OPFpath = Form4.pth;
                             }
                             //executa comando terminal
-                            Executeterminal(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
+                            ExecuteOPF(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
                             //impressão de resultados I
                             richTextBox1.Text = "Rodando OPF...";
                             //verifica se processo já foi finalizado
@@ -159,16 +164,67 @@ namespace WindowsFormsApplication1
                         {
                             if (comboBox1.SelectedIndex == 1)
                             {
-                                if (OPFpath == null && OPTpath == null && DEVpath == null)
+                                button5.Visible = true;
+                                if (OPFpath == null && OPTpath == null && DEVpath == null && DEEPpath == null)
                                 {
                                     Form winLib = new Form5();
                                     winLib.ShowDialog();
                                     OPFpath = Form5.OPFpth;
                                     OPTpath = Form5.OPTpth;
                                     DEVpath = Form5.DEVpth;
+                                    DEEPpath = Form5.DEEPpth;
                                 }
+                                //Informações PSo e criação do PSO_info.txt
+                                Form winPSO = new Form6(fileDirecSh);
+                                winPSO.ShowDialog();
                                 MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 comboBox1.Focus();
+                  /*
+                                //executa comando terminal
+                                ExecuteOPF_PSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
+                                //impressão de resultados I
+                                richTextBox1.Text = "Rodando OPF...";
+                                //verifica se processo já foi finalizado
+                                while (!System.IO.File.Exists(fileDirecSh + "/testing.pso.dat.acc"))
+                                {
+                                    richTextBox1.Text += "...";
+                                    System.Threading.Thread.Sleep(100);
+                                }
+                                //impressão de resultados II
+                                richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain * 100) + "%" + "\nPorcentagem de Teste: " + (Ptest * 100) + "%";
+                                string getName = System.IO.Path.GetFileNameWithoutExtension(path);//pega nome da base
+                                                                                                  //utiliza o base.txt
+                                string filePath = fileDirecSh + "/" + getName + ".txt";
+                                //impressão de resultados base Original
+                                richTextBox1.Text += "Resultados Base Original: ";
+                                using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+                                {
+                                    string line = ln.ReadLine();
+                                    string[] words = line.Split();
+                                    richTextBox1.Text += "\nNúmero de amostras: " + words[0];
+                                    richTextBox1.Text += "\nNúmero de classes: " + words[1];
+                                    richTextBox1.Text += "\nNúmero de características: " + words[2];
+                                }
+                                richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.acc");
+                                richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.time");
+                                richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.dat.time");
+                                
+                                //impressão de resultados base Otimizada
+                                richTextBox1.Text += "Resultados Base Otimizada: ";
+                                using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+                                {
+                                    string line = ln.ReadLine();
+                                    string[] words = line.Split();
+                                    richTextBox1.Text += "\nNúmero de amostras: " + words[0];
+                                    richTextBox1.Text += "\nNúmero de classes: " + words[1];
+                                    richTextBox1.Text += "\nNúmero de características: " + words[2]; //*********
+                                }
+                                richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.pso.dat.acc");
+                                richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.pso.dat.time");
+                                richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.pso.dat.time");
+                                //remoção dos arquivos gerados
+                                ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf PSO_Infos.txt *.dat " + getName + ".txt");
+                  */
                             }
                         }
                     }// end else sum
@@ -206,12 +262,12 @@ namespace WindowsFormsApplication1
 			saveFile1.Filter = "Text Files|*.txt";
 
 			// Determine whether the user selected a file name from the saveFileDialog.
-			if(saveFile1.ShowDialog() == System.Windows.Forms.DialogResult.OK &&
-				saveFile1.FileName.Length > 0) 
-			{
-				// Save the contents of the RichTextBox into the file.
-				richTextBox1.SaveFile(saveFile1.FileName);
-			}
+			    if(saveFile1.ShowDialog() == System.Windows.Forms.DialogResult.OK &&
+				    saveFile1.FileName.Length > 0) 
+			    {
+				    // Save the contents of the RichTextBox into the file.
+				    richTextBox1.SaveFile(saveFile1.FileName);
+			    }
 			}
         }
 
@@ -237,7 +293,7 @@ namespace WindowsFormsApplication1
 
         private void button5_Click(object sender, EventArgs e) // botão database
         {
-
+            
         }
 
 

@@ -12,7 +12,7 @@ namespace WindowsFormsApplication1
 {
     public partial class Form5 : Form
     {
-        public static string OPFpth, OPTpth, DEVpth;
+        public static string OPFpth, OPTpth, DEVpth, DEEPpth;
 
         public Form5()
         {
@@ -65,6 +65,23 @@ namespace WindowsFormsApplication1
                 DEVpth = folderBrowserDialog3.SelectedPath;
                 textBox3.Text = DEVpth;
             }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            // Displays an OpenFileDialog so the user can select a Cursor.
+            FolderBrowserDialog folderBrowserDialog4 = new FolderBrowserDialog();
+            //folderBrowserDialog1.Title = "Select a Database File";
+
+            // Show the Dialog.
+            // If the user clicked OK in the dialog and
+            // a .CUR file was selected, open it.
+            if (folderBrowserDialog4.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                DEEPpth = folderBrowserDialog4.SelectedPath;
+                textBox4.Text = DEEPpth;
+            }
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
