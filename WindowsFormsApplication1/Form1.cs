@@ -14,7 +14,7 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
         string path = null, OPFpath = null, OPTpath = null, DEVpath = null, DEEPpath = null, extension = null, fileName = null, fileDirec = null, fileDirecSh = null;
-		int ext = -1;								
+		int ext = -1, intCar;								
 		int[] bestF;
 		float Ptrain = 0, Ptest = 0;
 
@@ -246,7 +246,7 @@ namespace WindowsFormsApplication1
                                 richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.pso.dat.time");
                                 richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.pso.dat.time");
 								// armazenamento do best features
-								int intCar = Convert.ToInt16(CaracOr);
+								intCar = Convert.ToInt16(CaracOr);
 								bestF = new int[intCar];
 								string bestFeat = fileDirecSh + "/best_feats.txt";
 								using (System.IO.StreamReader ln = new System.IO.StreamReader(bestFeat))
@@ -257,8 +257,9 @@ namespace WindowsFormsApplication1
 										bestF [i] = Convert.ToInt16(feat[i]);
 									}
 								}
-								// remoção de arquivos
-                               ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
+                                MessageBox.Show("Otimização realizada, para ver as melhores características clique no botão .", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                // remoção de arquivos
+                                ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
 							  //ExecuteCommand(DEVpath, "rm *.out *.acc *.time classifier.opf  *.dat");
 
                             }
@@ -329,7 +330,8 @@ namespace WindowsFormsApplication1
 
         private void button5_Click(object sender, EventArgs e) // botão database
         {
-            
+            Form winCar = new Form7(intCar, bestF);
+            winCar.Show();
         }
 
 
