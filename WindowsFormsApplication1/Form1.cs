@@ -14,7 +14,8 @@ namespace WindowsFormsApplication1
     public partial class Form1 : Form
     {
         string path = null, OPFpath = null, OPTpath = null, DEVpath = null, DEEPpath = null, extension = null, fileName = null, fileDirec = null, fileDirecSh = null;
-		int ext = -1;
+		int ext = -1;								
+		int[] bestF;
 		float Ptrain = 0, Ptest = 0;
 
         public Form1()
@@ -177,13 +178,14 @@ namespace WindowsFormsApplication1
                                 //Informações PSo e criação do PSO_info.txt
                                 Form winPSO = new Form6(fileDirecSh);
                                 winPSO.ShowDialog();
+								winPSO.Close ();
                              //   MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                              //   comboBox1.Focus();
-                  
+								 
                                 //executa comando terminal
                                 ExecuteOPF_PSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
                                 //impressão de resultados I
-                                richTextBox1.Text = "Rodando...";
+								richTextBox1.Text = "Rodando...";
                                 //verifica se processo já foi finalizado
                                 while (!System.IO.File.Exists(fileDirecSh + "/testing.pso.dat.acc"))
                                 {
@@ -196,7 +198,8 @@ namespace WindowsFormsApplication1
                                                                                                   //utiliza o base.txt
                                 string filePath = fileDirecSh + "/" + getName + ".txt";
                                 //impressão de resultados base Original
-                                richTextBox1.Text += "Resultados Base Original: ";
+                                richTextBox1.Text += "\n\nResultados Base Original: ";
+								string CaracOr = null;
                                 using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
                                 {
                                     string line = ln.ReadLine();
@@ -204,26 +207,58 @@ namespace WindowsFormsApplication1
                                     richTextBox1.Text += "\nNúmero de amostras: " + words[0];
                                     richTextBox1.Text += "\nNúmero de classes: " + words[1];
                                     richTextBox1.Text += "\nNúmero de características: " + words[2];
+									CaracOr = words [2];
                                 }
                                 richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.acc");
                                 richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.time");
                                 richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.dat.time");
                                 
                                 //impressão de resultados base Otimizada
-                                richTextBox1.Text += "Resultados Base Otimizada: ";
-                                using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+                                richTextBox1.Text += "\n\nResultados Base Otimizada: ";
+								//ler informações do pso_infos
+								string filePSO = fileDirecSh + "/pso_infos.txt";
+                                using (System.IO.StreamReader ln = new System.IO.StreamReader(filePSO))
                                 {
                                     string line = ln.ReadLine();
                                     string[] words = line.Split();
-                                    richTextBox1.Text += "\nNúmero de amostras: " + words[0];
-                                    richTextBox1.Text += "\nNúmero de classes: " + words[1];
-                                    richTextBox1.Text += "\nNúmero de características: " + words[2]; //*********
+                                    richTextBox1.Text += "\nNúmero de agentes: " + words[0];
+                                    richTextBox1.Text += "\nNúmero de iterações: " + words[2];
                                 }
+								//transforma base otimizada em .txt
+								ExecuteCommand(fileDirecSh, OPFpath + "/tools/opf2txt training.pso.dat dataPSO.txt");
+								string Carac = null;
+								string dataPSO = fileDirecSh + "/dataPSO.txt";
+								using (System.IO.StreamReader ln = new System.IO.StreamReader(dataPSO))
+								{
+									string line = ln.ReadLine();
+									string[] words = line.Split();
+									Carac = words[2];
+								}
+								using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+								{
+									string line = ln.ReadLine();
+									string[] words = line.Split();
+									richTextBox1.Text += "\nNúmero de amostras: " + words[0];
+									richTextBox1.Text += "\nNúmero de classes: " + words[1];
+									richTextBox1.Text += "\nNúmero de características: " + Carac;
+								}
                                 richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.pso.dat.acc");
                                 richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.pso.dat.time");
                                 richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.pso.dat.time");
-                                //remoção dos arquivos gerados
-                               // ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf pso_infos.txt *.dat " + getName + ".txt");
+								// armazenamento do best features
+								int intCar = Convert.ToInt16(CaracOr);
+								bestF = new int[intCar];
+								string bestFeat = fileDirecSh + "/best_feats.txt";
+								using (System.IO.StreamReader ln = new System.IO.StreamReader(bestFeat))
+								{
+									string line = ln.ReadLine();
+									string[] feat = line.Split();
+									for (int i = 0; i < intCar; i++) {
+										bestF [i] = Convert.ToInt16(feat[i]);
+									}
+								}
+								// remoção de arquivos
+                               ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
 							  //ExecuteCommand(DEVpath, "rm *.out *.acc *.time classifier.opf  *.dat");
 
                             }

@@ -39,7 +39,7 @@ else
 fi
 
 $OPFPath"/bin/"opf_split $database $train 0 $test 0
-$DEVPath"/examples/bin/"FeatureSelection $train  $train $outPath"/pso_infos.txt"
+$DEVPath"/examples/bin/"FeatureSelection  $outPath"/training.dat"  $outPath"/testing.dat" $outPath"/pso_infos.txt"
 $OPFPath"/bin/"opf_train training.dat
 $OPFPath"/bin/"opf_classify testing.dat
 $OPFPath"/bin/"opf_accuracy testing.dat
