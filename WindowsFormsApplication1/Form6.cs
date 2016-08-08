@@ -47,13 +47,13 @@ namespace WindowsFormsApplication1
             Iter = Convert.ToInt16(textBox3.Text);
             c1 = 1.7;
             c2 = 1.7;
-            w = 0.5;
-            wmin = 1;
+            w = 0.7;
+            wmin = 0.5;
             wmax = 1.5;
 
             //Declaração do método StreamWriter passando o caminho e nome do arquivo que deve ser salvo
-            //string file = fileDirec+"/PSO_Infos.txt";
-            string file = "C:/Arquivos Bruna/UNESP/7º Semestre/Projeto e Implementação de Sistemas I/Interface/TCC/WindowsFormsApplication1/sh/PSO_Infos.txt";
+            string file = fileDirec+"/pso_infos.txt";
+            //string file = "C:/Arquivos Bruna/UNESP/7º Semestre/Projeto e Implementação de Sistemas I/Interface/TCC/WindowsFormsApplication1/sh/PSO_Infos.txt";
             Console.WriteLine(file);
             System.IO.StreamWriter writer = new System.IO.StreamWriter(file);
             //Escrevendo o Arquivo e pulando uma linha

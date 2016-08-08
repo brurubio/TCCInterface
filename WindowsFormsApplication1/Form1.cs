@@ -165,7 +165,7 @@ namespace WindowsFormsApplication1
                             if (comboBox1.SelectedIndex == 1)
                             {
                                 button5.Visible = true;
-                                if (OPFpath == null && OPTpath == null && DEVpath == null && DEEPpath == null)
+								if (OPFpath == null || (OPTpath == null && DEVpath == null && DEEPpath == null))
                                 {
                                     Form winLib = new Form5();
                                     winLib.ShowDialog();
@@ -177,13 +177,13 @@ namespace WindowsFormsApplication1
                                 //Informações PSo e criação do PSO_info.txt
                                 Form winPSO = new Form6(fileDirecSh);
                                 winPSO.ShowDialog();
-                                MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                comboBox1.Focus();
-                  /*
+                             //   MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                             //   comboBox1.Focus();
+                  
                                 //executa comando terminal
                                 ExecuteOPF_PSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
                                 //impressão de resultados I
-                                richTextBox1.Text = "Rodando OPF...";
+                                richTextBox1.Text = "Rodando...";
                                 //verifica se processo já foi finalizado
                                 while (!System.IO.File.Exists(fileDirecSh + "/testing.pso.dat.acc"))
                                 {
@@ -223,8 +223,9 @@ namespace WindowsFormsApplication1
                                 richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.pso.dat.time");
                                 richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.pso.dat.time");
                                 //remoção dos arquivos gerados
-                                ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf PSO_Infos.txt *.dat " + getName + ".txt");
-                  */
+                               // ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf pso_infos.txt *.dat " + getName + ".txt");
+							  //ExecuteCommand(DEVpath, "rm *.out *.acc *.time classifier.opf  *.dat");
+
                             }
                         }
                     }// end else sum
