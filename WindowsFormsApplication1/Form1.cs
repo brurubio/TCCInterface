@@ -259,7 +259,7 @@ namespace WindowsFormsApplication1
 								}
                                 MessageBox.Show("Otimização realizada, para ver as melhores características clique no botão .", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 // remoção de arquivos
-                                ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
+                                ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf best_feats.txt pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
 							  //ExecuteCommand(DEVpath, "rm *.out *.acc *.time classifier.opf  *.dat");
 
                             }
