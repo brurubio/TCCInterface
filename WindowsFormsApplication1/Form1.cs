@@ -182,7 +182,7 @@ namespace WindowsFormsApplication1
                                 //Informações PSo e criação do PSO_info.txt
                                 Form winPSO = new Form6(fileDirecSh);
                                 winPSO.ShowDialog();
-								winPSO.Close ();
+								//winPSO.Close();
                              //   MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                              //   comboBox1.Focus();
 								 
