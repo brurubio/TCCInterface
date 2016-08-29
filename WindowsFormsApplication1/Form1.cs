@@ -83,7 +83,11 @@ namespace WindowsFormsApplication1
                 fileDirec = System.IO.Path.GetDirectoryName(path); //diretório da base de dados
                 fileName = System.IO.Path.GetFileName(path); //nome da base de dados
                 extension = System.IO.Path.GetExtension(path); //extensão da base de dados
-                fileDirecSh = "/home/bruna/Bruna/UNESP/TCCInterface/WindowsFormsApplication1/sh"; //diretório do sh padrão
+                //diretório do sh padrão
+                string cntDir = System.IO.Directory.GetCurrentDirectory();
+                fileDirecSh = System.IO.Directory.GetParent(cntDir).FullName;
+                fileDirecSh = System.IO.Directory.GetParent(fileDirecSh).FullName;
+                fileDirecSh = fileDirecSh + "/sh";
                 //verifica extensão da base
                 if (String.Compare(extension, ".txt", true) == 0)
                 {
