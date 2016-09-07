@@ -16,7 +16,7 @@ namespace WindowsFormsApplication1
         string path = null, OPFpath = null, OPTpath = null, DEVpath = null, DEEPpath = null, extension = null, fileName = null, fileDirec = null, fileDirecSh = null;
 		int ext = -1, intCar;								
 		int[] bestF;
-		float Ptrain = 0, Ptest = 0;
+		float Ptrain = 0, Ptest = 0, trainPSO=0, evalPSO=0;
 
         public Form1()
         {
@@ -50,9 +50,9 @@ namespace WindowsFormsApplication1
 			ExecuteCommand(fileDirecSh, "./runOPF.sh " + ext + " " + OPFpath + " " + fileDirec + " " + fileDirecSh + " " + fileData + " " + Ptrain + " " + Ptest);
 		}
 
-        public static void ExecuteOPF_PSO(string OPFpath, string OPTpath, string DEVpath, string DEEPpath, string fileDirecSh, string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
+		public static void ExecutePSO(string OPFpath, string OPTpath, string DEVpath, string DEEPpath, string fileDirecSh, string fileDirec, string fileData, int ext, float Ptrain, float Ptest)
         {
-            ExecuteCommand(fileDirecSh, "./runOPF+PSO.sh " + ext + " " + OPFpath + " " + fileDirec + " " + fileDirecSh + " " + fileData + " " + Ptrain + " " + Ptest + " " + OPTpath + " " + DEVpath + " " + DEEPpath);
+			ExecuteCommand(fileDirecSh, "./runPSO.sh " + ext + " " + OPFpath + " " + fileDirec + " " + fileDirecSh + " " + fileData + " " + Ptrain + " " + Ptest + " " + OPTpath + " " + DEVpath + " " + DEEPpath);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -72,6 +72,7 @@ namespace WindowsFormsApplication1
 		//botão iniciar realiza toda operação
         private void button1_Click(object sender, EventArgs e) // botão iniciar
         {
+			richTextBox1.Clear();
             //caso nenhum arquivo tenha sido selecionado
             if (textBox1.Text == "")
             {
@@ -185,13 +186,16 @@ namespace WindowsFormsApplication1
 								//winPSO.Close();
                              //   MessageBox.Show("Processo ainda não implementado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                              //   comboBox1.Focus();
-								 
+								trainPSO = Ptrain/2;
+								Console.WriteLine (trainPSO);
+								Console.WriteLine (Ptest);
                                 //executa comando terminal
-                                ExecuteOPF_PSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
+								ExecuteOPF(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
+								ExecutePSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, trainPSO, Ptest);
                                 //impressão de resultados I
 								richTextBox1.Text = "Rodando...";
                                 //verifica se processo já foi finalizado
-                                while (!System.IO.File.Exists(fileDirecSh + "/testing.pso.dat.acc"))
+								while (!System.IO.File.Exists(fileDirecSh + "/final_accuracy.txt"))
                                 {
                                     richTextBox1.Text += "...";
                                     System.Threading.Thread.Sleep(100);
@@ -218,7 +222,7 @@ namespace WindowsFormsApplication1
                                 richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.dat.time");
                                 
                                 //impressão de resultados base Otimizada
-                                richTextBox1.Text += "\n\nResultados Base Otimizada: ";
+                                richTextBox1.Text += "\nResultados Base Otimizada: ";
 								//ler informações do pso_infos
 								string filePSO = fileDirecSh + "/pso_infos.txt";
                                 using (System.IO.StreamReader ln = new System.IO.StreamReader(filePSO))
@@ -229,7 +233,7 @@ namespace WindowsFormsApplication1
                                     richTextBox1.Text += "\nNúmero de iterações: " + words[2];
                                 }
 								//transforma base otimizada em .txt
-								ExecuteCommand(fileDirecSh, OPFpath + "/tools/opf2txt training.pso.dat dataPSO.txt");
+								ExecuteCommand(fileDirecSh, OPFpath + "/tools/opf2txt training.PSO.dat dataPSO.txt");
 								string Carac = null;
 								string dataPSO = fileDirecSh + "/dataPSO.txt";
 								using (System.IO.StreamReader ln = new System.IO.StreamReader(dataPSO))
@@ -246,9 +250,17 @@ namespace WindowsFormsApplication1
 									richTextBox1.Text += "\nNúmero de classes: " + words[1];
 									richTextBox1.Text += "\nNúmero de características: " + Carac;
 								}
-                                richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.pso.dat.acc");
-                                richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.pso.dat.time");
-                                richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.pso.dat.time");
+								using (System.IO.StreamReader ln = new System.IO.StreamReader (fileDirecSh + "/final_accuracy.txt")) {
+									string line = ln.ReadLine ();
+									string[] words = line.Split();
+									double accPSO = Convert.ToDouble(words[0])*100;
+									richTextBox1.Text += "\nAcurácia (%): " + accPSO;
+								}
+								using (System.IO.StreamReader ln = new System.IO.StreamReader (fileDirecSh + "/optimization.time")) {
+									string line = ln.ReadLine ();
+									string[] words = line.Split();
+									richTextBox1.Text += "\nTempo de otimização (s): " + words[0];
+								}
 								// armazenamento do best features
 								intCar = Convert.ToInt16(CaracOr);
 								bestF = new int[intCar];
@@ -261,11 +273,10 @@ namespace WindowsFormsApplication1
 										bestF [i] = Convert.ToInt16(feat[i]);
 									}
 								}
-                                MessageBox.Show("Otimização realizada, para ver as melhores características clique no botão .", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show("Otimização realizada, para ver as melhores características clique no botão binário.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 // remoção de arquivos
-                                ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf best_feats.txt pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
-							  //ExecuteCommand(DEVpath, "rm *.out *.acc *.time classifier.opf  *.dat");
-
+								ExecuteCommand(fileDirecSh, "rm *.out *.time *.acc classifier.opf best_feats.txt final_accuracy.txt pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
+							  
                             }
                         }
                     }// end else sum

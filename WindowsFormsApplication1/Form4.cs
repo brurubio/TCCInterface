@@ -37,6 +37,7 @@ namespace WindowsFormsApplication1
 
         private void button2_Click(object sender, EventArgs e) // OK
         {
+			pth = textBox1.Text;
             if (textBox1.Text == "")
             {
                 MessageBox.Show("Selecione um caminho", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -32,7 +32,7 @@ namespace WindowsFormsApplication1
             {
                 OPFpth = folderBrowserDialog1.SelectedPath;
                 textBox1.Text = OPFpth;
-            }
+			}
         }
 
         private void button2_Click(object sender, EventArgs e) //LibOPT
@@ -48,7 +48,7 @@ namespace WindowsFormsApplication1
             {
                 OPTpth = folderBrowserDialog2.SelectedPath;
                 textBox2.Text = OPTpth;
-            }
+			}
         }
 
         private void button3_Click(object sender, EventArgs e) //LibDev
@@ -91,6 +91,10 @@ namespace WindowsFormsApplication1
 
         private void button4_Click(object sender, EventArgs e)
         {
+			OPFpth = textBox1.Text;
+			OPTpth = textBox2.Text;
+			DEVpth = textBox3.Text;
+			DEEPpth = textBox4.Text;
             if (textBox1.Text == "")
             {
                 MessageBox.Show("Selecione um caminho para LibOPF", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
