@@ -137,34 +137,37 @@ namespace WindowsFormsApplication1
                             }
                             //executa comando terminal
                             ExecuteOPF(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
-                            //impressão de resultados I
-                            richTextBox1.Text = "Rodando OPF...";
-                            //verifica se processo já foi finalizado
-                            while (!System.IO.File.Exists(fileDirecSh + "/testing.dat.acc"))
+                            if (!System.IO.File.Exists(fileDirecSh + "/testing.dat.acc"))
                             {
-                                richTextBox1.Text += "...";
-                                System.Threading.Thread.Sleep(100);
+                                MessageBox.Show("Erro durante o processamento.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                //ExecuteCommand(fileDirecSh, "rm *.dat pso_infos.txt");
+                                Application.Exit();
                             }
-                            //impressão de resultados II
-                            richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain * 100) + "%" + "\nPorcentagem de Teste: " + (Ptest * 100) + "%";
-                            string getName = System.IO.Path.GetFileNameWithoutExtension(path);//pega nome da base
-                                                                                              //utiliza o base.txt
-                            string filePath = fileDirecSh + "/" + getName + ".txt";
-                            using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+                            else
                             {
-                                string line = ln.ReadLine();
-                                string[] words = line.Split();
-                                //impressão de resultados III
-                                richTextBox1.Text += "\nNúmero de amostras: " + words[0];
-                                richTextBox1.Text += "\nNúmero de classes: " + words[1];
-                                richTextBox1.Text += "\nNúmero de características: " + words[2];
-                            }
-                            //impressão de resultados IV
-                            richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.acc");
-                            richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.time");
-                            richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.dat.time");
-                            //remoção dos arquivos gerados
-                            ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf *.dat " + getName + ".txt");
+                                //impressão de resultados I
+                                richTextBox1.Text = "Rodando OPF...";
+                                //impressão de resultados II
+                                richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain * 100) + "%" + "\nPorcentagem de Teste: " + (Ptest * 100) + "%";
+                                string getName = System.IO.Path.GetFileNameWithoutExtension(path);//pega nome da base
+                                                                                                  //utiliza o base.txt
+                                string filePath = fileDirecSh + "/" + getName + ".txt";
+                                using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+                                {
+                                    string line = ln.ReadLine();
+                                    string[] words = line.Split();
+                                    //impressão de resultados III
+                                    richTextBox1.Text += "\nNúmero de amostras: " + words[0];
+                                    richTextBox1.Text += "\nNúmero de classes: " + words[1];
+                                    richTextBox1.Text += "\nNúmero de características: " + words[2];
+                                }
+                                //impressão de resultados IV
+                                richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.acc");
+                                richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.time");
+                                richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.dat.time");
+                                //remoção dos arquivos gerados
+                                ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf *.dat " + getName + ".txt");
+                            }//end else Exists.File
                         } //end if (combobox = 0)
                         else
                         {
@@ -196,7 +199,7 @@ namespace WindowsFormsApplication1
 								while ((checkComm != 1))
                                 {
                                     Form winProcess = new Form8();
-                                    winProcess.ShowDialog();
+                                    winProcess.Show();
                                     //MessageBox.Show("Aguarde!");
 									ExecuteOPF(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
 									ExecutePSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, trainPSO, Ptest);
@@ -205,6 +208,7 @@ namespace WindowsFormsApplication1
                                 }
                                 if (!System.IO.File.Exists(fileDirecSh + "/final_accuracy.txt")){
                                     MessageBox.Show("Erro durante o processamento.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    ExecuteCommand(fileDirecSh, "rm *.dat pso_infos.txt");
                                     Application.Exit();
                                 }
                                 else {
@@ -285,11 +289,11 @@ namespace WindowsFormsApplication1
                                     MessageBox.Show("Otimização realizada, para ver as melhores características clique no botão binário.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     // remoção de arquivos
                                     ExecuteCommand(fileDirecSh, "rm *.out *.time *.acc classifier.opf best_feats.txt final_accuracy.txt pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
-                                }
-                            }
-                        }
+                                }//end else Exists.File
+                            } //end combobox.selected == 1
+                        }//end else combobox.selected == 0
                     }// end else sum
-                }//end else combobox1.selectedindex
+                }//end else combobox1.selectedindex == -1
             }//end else textbox1.text
         }// end botão iniciar
 
@@ -352,7 +356,8 @@ namespace WindowsFormsApplication1
             }
         }
 
-        private void button5_Click(object sender, EventArgs e) // botão database
+        // botão bestfeatures
+        private void button5_Click(object sender, EventArgs e) 
         {
             Form winCar = new Form7(intCar, bestF);
             winCar.Show();
