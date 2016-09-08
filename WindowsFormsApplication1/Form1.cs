@@ -195,89 +195,97 @@ namespace WindowsFormsApplication1
 								int checkComm = 0;
 								while ((checkComm != 1))
                                 {
-									MessageBox.Show("Aguarde!");
+                                    Form winProcess = new Form8();
+                                    winProcess.ShowDialog();
+                                    //MessageBox.Show("Aguarde!");
 									ExecuteOPF(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
 									ExecutePSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, trainPSO, Ptest);
 									checkComm = 1;
+                                    winProcess.Close();
                                 }
-								richTextBox1.Text = "Rodando...";
-                                //impressão de resultados II
-                                richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain * 100) + "%" + "\nPorcentagem de Teste: " + (Ptest * 100) + "%";
-                                string getName = System.IO.Path.GetFileNameWithoutExtension(path);//pega nome da base
-                                                                                                  //utiliza o base.txt
-                                string filePath = fileDirecSh + "/" + getName + ".txt";
-                                //impressão de resultados base Original
-                                richTextBox1.Text += "\n\nResultados Base Original: ";
-								string CaracOr = null;
-                                using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
-                                {
-                                    string line = ln.ReadLine();
-                                    string[] words = line.Split();
-                                    richTextBox1.Text += "\nNúmero de amostras: " + words[0];
-                                    richTextBox1.Text += "\nNúmero de classes: " + words[1];
-                                    richTextBox1.Text += "\nNúmero de características: " + words[2];
-									CaracOr = words [2];
+                                if (!System.IO.File.Exists(fileDirecSh + "/final_accuracy.txt")){
+                                    MessageBox.Show("Erro durante o processamento.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    Application.Exit();
                                 }
-                                richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.acc");
-                                richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.time");
-                                richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.dat.time");
-                                
-                                //impressão de resultados base Otimizada
-                                richTextBox1.Text += "\nResultados Base Otimizada: ";
-								//ler informações do pso_infos
-								string filePSO = fileDirecSh + "/pso_infos.txt";
-                                using (System.IO.StreamReader ln = new System.IO.StreamReader(filePSO))
-                                {
-                                    string line = ln.ReadLine();
-                                    string[] words = line.Split();
-                                    richTextBox1.Text += "\nNúmero de agentes: " + words[0];
-                                    richTextBox1.Text += "\nNúmero de iterações: " + words[2];
+                                else {
+                                    richTextBox1.Text = "Rodando...";
+                                    //impressão de resultados II
+                                    richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain * 100) + "%" + "\nPorcentagem de Teste: " + (Ptest * 100) + "%";
+                                    string getName = System.IO.Path.GetFileNameWithoutExtension(path);//pega nome da base
+                                                                                                      //utiliza o base.txt
+                                    string filePath = fileDirecSh + "/" + getName + ".txt";
+                                    //impressão de resultados base Original
+                                    richTextBox1.Text += "\n\nResultados Base Original: ";
+                                    string CaracOr = null;
+                                    using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+                                    {
+                                        string line = ln.ReadLine();
+                                        string[] words = line.Split();
+                                        richTextBox1.Text += "\nNúmero de amostras: " + words[0];
+                                        richTextBox1.Text += "\nNúmero de classes: " + words[1];
+                                        richTextBox1.Text += "\nNúmero de características: " + words[2];
+                                        CaracOr = words[2];
+                                    }
+                                    richTextBox1.Text += "\nAcurácia (%): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.acc");
+                                    richTextBox1.Text += "Tempo de treinamento (s): " + System.IO.File.ReadAllText(fileDirecSh + "/testing.dat.time");
+                                    richTextBox1.Text += "Tempo de teste (s): " + System.IO.File.ReadAllText(fileDirecSh + "/training.dat.time");
+
+                                    //impressão de resultados base Otimizada
+                                    richTextBox1.Text += "\nResultados Base Otimizada: ";
+                                    //ler informações do pso_infos
+                                    string filePSO = fileDirecSh + "/pso_infos.txt";
+                                    using (System.IO.StreamReader ln = new System.IO.StreamReader(filePSO))
+                                    {
+                                        string line = ln.ReadLine();
+                                        string[] words = line.Split();
+                                        richTextBox1.Text += "\nNúmero de agentes: " + words[0];
+                                        richTextBox1.Text += "\nNúmero de iterações: " + words[2];
+                                    }
+                                    //transforma base otimizada em .txt
+                                    ExecuteCommand(fileDirecSh, OPFpath + "/tools/opf2txt training.PSO.dat dataPSO.txt");
+                                    string Carac = null;
+                                    string dataPSO = fileDirecSh + "/dataPSO.txt";
+                                    using (System.IO.StreamReader ln = new System.IO.StreamReader(dataPSO))
+                                    {
+                                        string line = ln.ReadLine();
+                                        string[] words = line.Split();
+                                        Carac = words[2];
+                                    }
+                                    using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
+                                    {
+                                        string line = ln.ReadLine();
+                                        string[] words = line.Split();
+                                        richTextBox1.Text += "\nNúmero de amostras: " + words[0];
+                                        richTextBox1.Text += "\nNúmero de classes: " + words[1];
+                                        richTextBox1.Text += "\nNúmero de características: " + Carac;
+                                    }
+                                    using (System.IO.StreamReader ln = new System.IO.StreamReader(fileDirecSh + "/final_accuracy.txt")) {
+                                        string line = ln.ReadLine();
+                                        string[] words = line.Split();
+                                        double accPSO = Convert.ToDouble(words[0]) * 100;
+                                        richTextBox1.Text += "\nAcurácia (%): " + accPSO;
+                                    }
+                                    using (System.IO.StreamReader ln = new System.IO.StreamReader(fileDirecSh + "/optimization.time")) {
+                                        string line = ln.ReadLine();
+                                        string[] words = line.Split();
+                                        richTextBox1.Text += "\nTempo de otimização (s): " + words[0];
+                                    }
+                                    // armazenamento do best features
+                                    intCar = Convert.ToInt16(CaracOr);
+                                    bestF = new int[intCar];
+                                    string bestFeat = fileDirecSh + "/best_feats.txt";
+                                    using (System.IO.StreamReader ln = new System.IO.StreamReader(bestFeat))
+                                    {
+                                        string line = ln.ReadLine();
+                                        string[] feat = line.Split();
+                                        for (int i = 0; i < intCar; i++) {
+                                            bestF[i] = Convert.ToInt16(feat[i]);
+                                        }
+                                    }
+                                    MessageBox.Show("Otimização realizada, para ver as melhores características clique no botão binário.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    // remoção de arquivos
+                                    ExecuteCommand(fileDirecSh, "rm *.out *.time *.acc classifier.opf best_feats.txt final_accuracy.txt pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
                                 }
-								//transforma base otimizada em .txt
-								ExecuteCommand(fileDirecSh, OPFpath + "/tools/opf2txt training.PSO.dat dataPSO.txt");
-								string Carac = null;
-								string dataPSO = fileDirecSh + "/dataPSO.txt";
-								using (System.IO.StreamReader ln = new System.IO.StreamReader(dataPSO))
-								{
-									string line = ln.ReadLine();
-									string[] words = line.Split();
-									Carac = words[2];
-								}
-								using (System.IO.StreamReader ln = new System.IO.StreamReader(filePath))
-								{
-									string line = ln.ReadLine();
-									string[] words = line.Split();
-									richTextBox1.Text += "\nNúmero de amostras: " + words[0];
-									richTextBox1.Text += "\nNúmero de classes: " + words[1];
-									richTextBox1.Text += "\nNúmero de características: " + Carac;
-								}
-								using (System.IO.StreamReader ln = new System.IO.StreamReader (fileDirecSh + "/final_accuracy.txt")) {
-									string line = ln.ReadLine ();
-									string[] words = line.Split();
-									double accPSO = Convert.ToDouble(words[0])*100;
-									richTextBox1.Text += "\nAcurácia (%): " + accPSO;
-								}
-								using (System.IO.StreamReader ln = new System.IO.StreamReader (fileDirecSh + "/optimization.time")) {
-									string line = ln.ReadLine ();
-									string[] words = line.Split();
-									richTextBox1.Text += "\nTempo de otimização (s): " + words[0];
-								}
-								// armazenamento do best features
-								intCar = Convert.ToInt16(CaracOr);
-								bestF = new int[intCar];
-								string bestFeat = fileDirecSh + "/best_feats.txt";
-								using (System.IO.StreamReader ln = new System.IO.StreamReader(bestFeat))
-								{
-									string line = ln.ReadLine();
-									string[] feat = line.Split();
-									for (int i = 0; i < intCar; i++) {
-										bestF [i] = Convert.ToInt16(feat[i]);
-									}
-								}
-                                MessageBox.Show("Otimização realizada, para ver as melhores características clique no botão binário.", "", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                // remoção de arquivos
-								ExecuteCommand(fileDirecSh, "rm *.out *.time *.acc classifier.opf best_feats.txt final_accuracy.txt pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
-							  
                             }
                         }
                     }// end else sum
