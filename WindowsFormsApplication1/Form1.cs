@@ -190,16 +190,17 @@ namespace WindowsFormsApplication1
 								Console.WriteLine (trainPSO);
 								Console.WriteLine (Ptest);
                                 //executa comando terminal
-								ExecuteOPF(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
-								ExecutePSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, trainPSO, Ptest);
-                                //impressão de resultados I
-								richTextBox1.Text = "Rodando...";
-                                //verifica se processo já foi finalizado
-								while (!System.IO.File.Exists(fileDirecSh + "/final_accuracy.txt"))
+								//impressão de resultados I
+								//verifica se processo já foi finalizado
+								int checkComm = 0;
+								while ((checkComm != 1))
                                 {
-                                    richTextBox1.Text += "...";
-                                    System.Threading.Thread.Sleep(100);
+									MessageBox.Show("Aguarde!");
+									ExecuteOPF(OPFpath, fileDirecSh, fileDirec, fileName, ext, Ptrain, Ptest);
+									ExecutePSO(OPFpath, OPTpath, DEVpath, DEEPpath, fileDirecSh, fileDirec, fileName, ext, trainPSO, Ptest);
+									checkComm = 1;
                                 }
+								richTextBox1.Text = "Rodando...";
                                 //impressão de resultados II
                                 richTextBox1.Text += "OK\nBase de Dados: " + fileName + "\nPorcentagem de Treinamento: " + (Ptrain * 100) + "%" + "\nPorcentagem de Teste: " + (Ptest * 100) + "%";
                                 string getName = System.IO.Path.GetFileNameWithoutExtension(path);//pega nome da base
