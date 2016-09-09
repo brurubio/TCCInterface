@@ -141,6 +141,8 @@ namespace WindowsFormsApplication1
                             {
                                 MessageBox.Show("Erro durante o processamento.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 //ExecuteCommand(fileDirecSh, "rm *.dat pso_infos.txt");
+								ExecuteCommand(fileDirecSh, "rm *.dat " + getName + ".txt");
+
                                 Application.Exit();
                             }
                             else
