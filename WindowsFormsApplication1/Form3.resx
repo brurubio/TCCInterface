@@ -119,14 +119,15 @@
   </resheader>
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>• Para o funcionamento correto desta interface, é necessário instalar alguns recursos adicionais:
-   ◦ LibOPF - 
-   ◦ LibOPT - 
-   ◦ LibDEV -
+   ◦ LibOPF - https://github.com/jppbsi/LibOPF
+   ◦ LibOPT Plus - https://github.com/jppbsi/LibOPT-plus
+   ◦ LibDEV -https://github.com/jppbsi/LibDEV
+   ◦ LibDEEP - https://github.com/jppbsi/LibDEEP
 
 • Formato da base de dados
 O classificador OPF compreende um formato específico comobase de dados de antrada, aceitando arquivos no formato: Texto (*.txt) ou Dados (*.dat). 
 
-No entanto, ainda é necessário que o arquivo de base da dados siga uma formatação específica, já que o OPF comprrende apenas dados numéricos. A formatação necessária segue abaixo:
+No entanto, ainda é necessário que o arquivo de base da dados siga uma formatação específica, já que o OPF compreende apenas dados numéricos. A formatação necessária segue abaixo:
 
 &lt;# nº de amostras&gt; &lt;# nº de classes&gt; &lt;# nº de características&gt;
 &lt;0&gt; &lt;rótulo&gt; &lt;carac. 1 da amostra 0&gt; &lt;carac. 2 da amostra 0&gt;
@@ -136,12 +137,16 @@ No entanto, ainda é necessário que o arquivo de base da dados siga uma formata
 • Operações
    ◦ Classificação(OPF): No processo de classificação, o classificador OPF será responsável por dividir a base de dados para treinamento e teste, para que consiga aprender as possíveis classes na etapa de treinamento, para posteriormente classificar novas amostras no período de teste.
 
-   ◦ Classificação + Otimização:
+   ◦ Classificação + Otimização: No processo de classificação e otimização, será apresentados os resultados de classificação da base original e da base otimizada, podendo assim verificar se houve melhora com a otimização do problema. Durante o processo de otimização é necessário um conjunto de treino, teste e validação, sendo este último obtido através da divisão do conjunto de treino pela metade, sendo uma parte destinada ao treino e outra à validação. Para a classificação após a otimização, treino e validação são unidos para formar um único treino. Quando selecionada esta opção, um botão de características é disponibilizado para poder visualiza as características selecionadas pela otimização. 
 
 • Porcentagens:
 É necessário que a soma das procentagens de treinamento e de teste somem 100%.
 
-• Salvar
-Para armazenar os resultados obtidos e apresentados é preciso salvá-los em um arquivo texto.</value>
+• Salvar:
+Para armazenar os resultados obtidos e apresentados é preciso salvá-los em um arquivo de texto.
+
+• Características:
+É possível visualizar as características selecionadas durante o processo de otimização, sendo possível salvar tais informações em um arquivo de texto.
+</value>
   </data>
 </root>

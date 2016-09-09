@@ -118,13 +118,14 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="richTextBox1.Text" xml:space="preserve">
-    <value>Esta interface foi criada com o intuito de facilitar o entendimento, de forma visual, do procedimento realizado no Trabalho de Conclusão  de Curso do curso de Ciência da Computação. Foi desenvolvido em linguagem C# para ambiente linux e está disponível em um repositório do github.
+    <value>Esta interface foi criada com o intuito de facilitar o entendimento, de forma visual, do procedimento realizado no Trabalho de Conclusão  de Curso "Classificação e Otimização de Características para Detecção de Anomalias em Redes de Computadores" do curso de Ciência da Computação. Foi desenvolvido em linguagem C# para ambiente linux.
 
 Aluna: Bruna de Camargo Rubio
 Instituição: Universidade Estadual Paulista "Júlio de Mesquita Filho" - Campus Bauru
 Endereço Github: https://github.com/brurubio/TCCInterface
 Contato: b.camargorubio@gmail.com
 
-                                             ©2016.</value>
+                                             ©2016.
+</value>
   </data>
 </root>
