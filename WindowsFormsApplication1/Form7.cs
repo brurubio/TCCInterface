@@ -23,9 +23,9 @@ namespace WindowsFormsApplication1
             bestFeat = new int[nCar];
             bestFeat = vet;
 			richTextBox1.Text += "Total: " + bestFeat [0] + "\n";
-            for (int i = 1; i < nCar; i++)
+            for (int i = 1; i <= nCar; i++)
             {
-				richTextBox1.Text += (i+1) + ": " + bestFeat[i] + "\n";
+				richTextBox1.Text += (i) + ": " + bestFeat[i] + "\n";
             }
         }
 

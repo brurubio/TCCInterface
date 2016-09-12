@@ -141,9 +141,9 @@ namespace WindowsFormsApplication1
                             {
                                 MessageBox.Show("Erro durante o processamento.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 //ExecuteCommand(fileDirecSh, "rm *.dat pso_infos.txt");
-								ExecuteCommand(fileDirecSh, "rm *.dat " + getName + ".txt");
-
-                                Application.Exit();
+								string getName = System.IO.Path.GetFileNameWithoutExtension(path);
+								ExecuteCommand(fileDirecSh, "rm *.out *.acc *.time classifier.opf *.dat " + getName + ".txt");
+								Application.Exit();
                             }
                             else
                             {
@@ -210,8 +210,9 @@ namespace WindowsFormsApplication1
                                 }
                                 if (!System.IO.File.Exists(fileDirecSh + "/final_accuracy.txt")){
                                     MessageBox.Show("Erro durante o processamento.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    ExecuteCommand(fileDirecSh, "rm *.dat pso_infos.txt");
-                                    Application.Exit();
+									string getName = System.IO.Path.GetFileNameWithoutExtension(path);
+									ExecuteCommand(fileDirecSh, "rm *.out *.time *.acc classifier.opf best_feats.txt final_accuracy.txt pso_infos.txt dataPSO.txt *.dat " + getName + ".txt");
+									Application.Exit();
                                 }
                                 else {
                                     richTextBox1.Text = "Rodando...";
@@ -278,13 +279,13 @@ namespace WindowsFormsApplication1
                                     }
                                     // armazenamento do best features
                                     intCar = Convert.ToInt16(CaracOr);
-                                    bestF = new int[intCar];
+                                    bestF = new int[intCar+1];
                                     string bestFeat = fileDirecSh + "/best_feats.txt";
                                     using (System.IO.StreamReader ln = new System.IO.StreamReader(bestFeat))
                                     {
                                         string line = ln.ReadLine();
                                         string[] feat = line.Split();
-                                        for (int i = 0; i < intCar; i++) {
+                                        for (int i = 0; i <= intCar; i++) {
                                             bestF[i] = Convert.ToInt16(feat[i]);
                                         }
                                     }

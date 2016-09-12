@@ -88,7 +88,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(147, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Insira o caminho para LibOPT";
+            this.label2.Text = "Insira o caminho para LibOPT Plus";
             // 
             // label3
             // 
