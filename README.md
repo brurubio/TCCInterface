@@ -1,4 +1,4 @@
-<img src="WindowsFormsApplication1/Images/Bug-LineMaxSize.png" align="center" alt="Footnote"/>
+<img src="WindowsFormsApplication1/Images/Bug-LineMaxSize.png" align="center" alt="Footer"/>
 
 #TCCInterface
 
@@ -24,7 +24,10 @@ as decisões dos indivíduos, que buscam seguir a melhor opção. <cite>[2]</cit
 
 ## Interface Gráfica
 
+Com o intuito de exemplificar, de forma mais visual, as técnicas aplicadas no trabalho, foi criado um software que auxilia o usuário
+a executar o procedimento. O software foi desenvolvido em linguagem C# para ambiente linux. Seu funcionamento é simples, criando apenas um *front-end* para o processamento realizado em *back-end* através do terminal de comando.
 
+No entanto, algumas ferramentas auxiliares são necessárias, para o correto funcionamento da interface.
 
 
 
