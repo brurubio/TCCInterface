@@ -60,4 +60,4 @@ of Imaging Systems and Technology, Wiley Subscription Services, Inc., A Wiley Co
 [2] KENNEDY, J.; EBERHART, R. Particle swarm optimization. In: Neural Networks, 1995. Proceedings., IEEE International Conference on. 
 [S.l.: s.n.], 1995. v. 4, p. 1942–1948 vol.4.
 
-[3] Mono; Disponível em: http://www.mono-project.com/download/#download-lin
+[3] Mono. Disponível em: http://www.mono-project.com/
