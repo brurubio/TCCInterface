@@ -346,7 +346,7 @@ namespace WindowsFormsApplication1
             // Displays an OpenFileDialog so the user can select a Cursor.
             OpenFileDialog openFileDialog1 = new OpenFileDialog();
             //openFileDialog1.Filter = "Text files (*.txt)|*.txt| Data files (*.dat)|*.dat ";
-            openFileDialog1.Filter = "OPF files (*.txt,*.dat)|*.txt;*.dat ";
+            openFileDialog1.Filter = "OPF files (*.opf,*.txt,*.dat)|*.opf;*.txt;*.dat ";
             openFileDialog1.Title = "Select a Database File";
 
             // Show the Dialog.
